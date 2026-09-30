@@ -1,0 +1,5 @@
+import {database,adminKey} from './store-db';
+const encoder=new TextEncoder();
+async function key(){if(!adminKey())throw Error('Admin secret missing');return crypto.subtle.importKey('raw',await crypto.subtle.digest('SHA-256',encoder.encode(adminKey())),{name:'AES-GCM'},false,['encrypt','decrypt'])}
+export async function saveProviderKey(value:string){const iv=crypto.getRandomValues(new Uint8Array(12));const encrypted=await crypto.subtle.encrypt({name:'AES-GCM',iv},await key(),encoder.encode(value));const packed=JSON.stringify({iv:Array.from(iv),data:Array.from(new Uint8Array(encrypted))});await database().prepare('INSERT INTO settings(key,value) VALUES(?,?) ON CONFLICT(key) DO UPDATE SET value=excluded.value').bind('fashn',packed).run()}
+export async function providerKey(){const row=await database().prepare('SELECT value FROM settings WHERE key=?').bind('fashn').first<{value:string}>();if(!row)return null;const v=JSON.parse(row.value);const bytes=await crypto.subtle.decrypt({name:'AES-GCM',iv:new Uint8Array(v.iv)},await key(),new Uint8Array(v.data));return new TextDecoder().decode(bytes)}

@@ -1,0 +1,14 @@
+# AMÁNI — application handoff
+
+Includes branded responsive storefront, sample abaya catalog, length selection, database-backed shopping bag, signed-in order history, test checkout, and protected order/price management.
+
+AI photo try-on: choose a product, choose Virtual try-on with AI, upload a JPG/PNG/WebP image, and consent to processing. The backend integrates FASHN tryon-v1.6. An active, funded FASHN API account is required. Its key can be saved through Store management once admin access is configured. Keys are encrypted server-side; photos and generated results are not persisted in the application database. Live provider generation has not been verified because no provider key is connected.
+
+This is a private preview with illustrative INR prices and generated sample product imagery. Test checkout takes no payment and does not arrange fulfillment. Replace catalog content and configure payment/shipping before a customer launch.
+
+Validation: production build and TypeScript check; database catalog read, authenticated cart update, quantity rejection, checkout, order history, duplicate checkout prevention, protected admin access, and disconnected-provider behavior. WebMCP browser validation was unavailable.
+
+Architecture: React/Vinext, Cloudflare Worker API, D1 SQLite, platform sign-in, FASHN API integration. Database migrations are under drizzle/. Run npm run install:ci, npm run dev, npm run build. Set ADMIN_KEY as a server secret to enable management. Changing it requires reconnecting FASHN because it encrypts the stored provider key.
+
+FASHN documentation: https://docs.fashn.ai/api-reference/tryon-v1-6
+Privacy: https://docs.fashn.ai/api-overview/data-retention-privacy

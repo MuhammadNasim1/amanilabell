@@ -1,0 +1,3 @@
+import {adminKey} from '@/lib/store-db';
+import {saveProviderKey} from '@/lib/provider';
+export async function POST(r:Request){if(!adminKey()||r.headers.get('authorization')!==`Bearer ${adminKey()}`)return Response.json({error:'Unauthorized'},{status:401});if(r.headers.get('origin')&&r.headers.get('origin')!==new URL(r.url).origin)return Response.json({error:'Request not allowed'},{status:403});try{const b:any=await r.json();if(typeof b.key!=='string'||b.key.length<12||b.key.length>500)return Response.json({error:'Enter a valid FASHN API key.'},{status:400});await saveProviderKey(b.key.trim());return Response.json({ok:true})}catch{return Response.json({error:'Unable to save the connection.'},{status:503})}}

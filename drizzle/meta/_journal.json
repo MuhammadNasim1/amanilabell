@@ -1,0 +1,20 @@
+{
+  "version": "7",
+  "dialect": "sqlite",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "6",
+      "when": 1790710981983,
+      "tag": "0000_real_alex_wilder",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1790711097626,
+      "tag": "0001_married_penance",
+      "breakpoints": true
+    }
+  ]
+}
